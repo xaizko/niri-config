@@ -105,7 +105,7 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+R { switch-preset-window-height; }
     Mod+Shift+Right { move-column-right; }
-    Mod+Shift+S hotkey-overlay-title="Screenshot Window" { spawn "/home/xaizko/.local/bin/dot-screenshot" "window"; }
+    Mod+Shift+S hotkey-overlay-title="Screenshot Window" { spawn "~/.local/bin/dot-screenshot" "window"; }
     Mod+Shift+Up { move-window-up; }
     Mod+Shift+WheelScrollDown { focus-column-right; }
     Mod+Shift+WheelScrollUp { focus-column-left; }
@@ -115,9 +115,9 @@ binds {
     Mod+WheelScrollRight { focus-column-right; }
     Super+Shift+T { switch-focus-between-floating-and-tiling; }
     Super+V { toggle-window-floating; }
-    Mod+Shift+Ctrl+S hotkey-overlay-title="Screenshot All" { spawn "/home/xaizko/.local/bin/dot-screenshot" "monitor-all"; }
+    Mod+Shift+Ctrl+S hotkey-overlay-title="Screenshot All" { spawn "~/.local/bin/dot-screenshot" "monitor-all"; }
     Mod+Shift+P { power-off-monitors; }
-    Print hotkey-overlay-title="Screenshot Region" { spawn "/home/xaizko/.local/bin/dot-screenshot" "region"; }
+    Print hotkey-overlay-title="Screenshot Region" { spawn "~/.local/bin/dot-screenshot" "region"; }
     Super+B hotkey-overlay-title="Open Browser" { spawn "brave"; }
     Super+Return hotkey-overlay-title="Open Terminal" { spawn "kitty"; }
     Mod+D repeat=false { toggle-overview; }
