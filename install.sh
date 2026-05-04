@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Install DMS
+curl -fsSL https://install.danklinux.com | sh
+
 # Install packages
 sudo pacman -S --noconfirm \
   flatpak fish fzf zoxide neovim thefuck superfile \
