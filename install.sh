@@ -26,7 +26,7 @@ if ! command -v paru >/dev/null; then
 fi
 
 # Install AUR packages
-paru -S --noconfirm brave-bin pacseek
+paru -S --noconfirm brave-bin pacseek visual-studio-code-bin
 
 # Copy configs 
 rsync -a niri-config/nvim/ ~/.config/nvim/
