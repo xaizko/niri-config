@@ -36,6 +36,7 @@ paru -S --noconfirm brave-bin pacseek visual-studio-code-bin vesktop \
 rsync -a niri-config/nvim/ ~/.config/nvim/
 rsync -a niri-config/satty/ ~/.config/satty/
 rsync -a niri-config/niri/ ~/.config/niri/
+rsync -a niri-config/DankMaterialShell ~/.config/DankMaterialShell
 rsync -a niri-config/bin/ ~/.local/bin/
 
 # Make scripts executable
