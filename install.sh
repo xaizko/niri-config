@@ -41,6 +41,10 @@ find ~/.local/bin -type f -exec chmod +x {} +
 flatpak install -y flathub com.github.PintaProject.Pinta
 flatpak install -y flathub org.vinegarhq.Sober
 
+# Update Launcher To Add Flatpak Apps
+sudo ln -sf /var/lib/flatpak/exports/share/applications/*.desktop /usr/share/applications/ 2>/dev/null || true
+sudo update-desktop-database /usr/share/applications || true
+
 # Change shell to fish 
 if [ "$SHELL" != "$(which fish)" ]; then
   chsh -s "$(which fish)"
