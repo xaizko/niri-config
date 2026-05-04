@@ -7,6 +7,9 @@ sudo pacman -S --noconfirm \
   wireguard-tools satty grim slurp fd go python \
   networkmanager gcc rustup npm rsync
 
+#Set up Rust
+rustup default stable
+
 # Enable NetworkManager
 sudo systemctl enable --now NetworkManager
 
