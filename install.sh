@@ -37,6 +37,10 @@ rsync -a niri-config/bin/ ~/.local/bin/
 # Make scripts executable
 find ~/.local/bin -type f -exec chmod +x {} +
 
+# Install Flatpak apps
+flatpak install -y flathub com.github.PintaProject.Pinta
+flatpak install -y flathub org.vinegarhq.Sober
+
 # Change shell to fish 
 if [ "$SHELL" != "$(which fish)" ]; then
   chsh -s "$(which fish)"
