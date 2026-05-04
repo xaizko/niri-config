@@ -5,7 +5,7 @@ set -euo pipefail
 sudo pacman -S --noconfirm \
   flatpak fish fzf zoxide neovim thefuck superfile \
   wireguard-tools satty grim slurp fd go python \
-  NetworkManager gcc rustup npm rsync
+  networkmanager gcc rustup npm rsync
 
 # Enable NetworkManager
 sudo systemctl enable --now NetworkManager
