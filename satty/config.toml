@@ -2,6 +2,6 @@
 
 early-exit = true
 
-copy-command = "wl-copy"
+copy-command = "dms cl copy -t image/png"
 
 initial-tool = "brush"
