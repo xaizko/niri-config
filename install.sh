@@ -9,7 +9,8 @@ sudo pacman -S --noconfirm \
   flatpak fish fzf zoxide neovim thefuck superfile \
   wireguard-tools satty grim slurp fd go python \
   networkmanager gcc rustup npm rsync fastfetch \
-  unzip zip mpv bat tree nano openssh
+  unzip zip mpv bat tree nano openssh ripgrep \
+  tree-sitter-cli
 
 #Set up Rust
 rustup default stable
