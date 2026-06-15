@@ -1,8 +1,8 @@
 return {
-    'nvim-treesitter/nvim-treesitter',
+    'nvim-treesitter/nvim-treesitter', tag = "v0.10.0",
     build = ":TSUpdate",
     config = function()
-	local configs = require("nvim-treesitter.configs")
+	local configs = require("nvim-treesitter")
 	configs.setup({
 	    highlight = {
 		enable = true,
