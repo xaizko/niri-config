@@ -9,7 +9,9 @@ sudo pacman -S --noconfirm \
   flatpak fish fzf zoxide neovim thefuck superfile \
   wireguard-tools satty grim slurp fd go python \
   networkmanager gcc rustup npm rsync fastfetch \
-  unzip zip mpv bat tree nano openssh
+  unzip zip mpv bat tree nano openssh \
+  xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
+  pipewire wireplumber obs-studio
 
 #Set up Rust
 rustup default stable
@@ -40,7 +42,8 @@ paru -S --noconfirm brave-bin pacseek visual-studio-code-bin vesktop \
 rsync -a niri-config/nvim/ ~/.config/nvim/
 rsync -a niri-config/satty/ ~/.config/satty/
 rsync -a niri-config/niri/ ~/.config/niri/
-rsync -a niri-config/DankMaterialShell ~/.config/DankMaterialShell/
+# For some reason doesn't work, have to do manually
+# rsync -a niri-config/DankMaterialShell ~/.config/DankMaterialShell/
 rsync -a niri-config/bin/ ~/.local/bin/
 
 # Make scripts executable
