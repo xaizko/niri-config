@@ -10,7 +10,7 @@ return {
         'saadparwaiz1/cmp_luasnip',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-nvim-lua',
-	-- 'zbirenbaum/copilot-cmp',
+        -- 'zbirenbaum/copilot-cmp',
         -- Snippets
         'L3MON4D3/LuaSnip',
         'rafamadriz/friendly-snippets',
@@ -18,13 +18,13 @@ return {
     config = function()
         local autoformat_filetypes = {
             "lua",
-	    "c",
-	    "rust",
-	    "cpp",
-	    "python",
-	    "java",
-	    "typescript",
-	    "typescriptreact",
+            "c",
+            "rust",
+            "cpp",
+            "python",
+            "java",
+            "typescript",
+            "typescriptreact",
         }
         -- Create a keymap for vim.lsp.buf.implementation
 --        vim.api.nvim_create_autocmd('LspAttach', {
@@ -38,7 +38,7 @@ return {
 --                            vim.lsp.buf.format({
 --                                formatting_options = { tabSize = 4, insertSpaces = true },
 --                                bufnr = args.buf,
---                               id = client.id
+--                                id = client.id
 --                            })
 --                        end
 --                    })
@@ -46,20 +46,22 @@ return {
 --            end
 --        })
 
-        -- Add borders to floating windows
-        vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-            vim.lsp.handlers.hover,
-            { border = 'rounded' }
-        )
-        vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-            vim.lsp.handlers.signature_help,
-            { border = 'rounded' }
-        )
+        vim.lsp.handlers['textDocument/hover'] = function(err, result, ctx, config)
+            config = config or {}
+            config.border = 'rounded'
+            return vim.lsp.handlers.hover(err, result, ctx, config)
+        end
+
+        vim.lsp.handlers['textDocument/signatureHelp'] = function(err, result, ctx, config)
+            config = config or {}
+            config.border = 'rounded'
+            return vim.lsp.handlers.signature_help(err, result, ctx, config)
+        end
 
         -- Configure error/warnings interface
         vim.diagnostic.config({
             virtual_text = true,
-	    underline = true,
+            underline = true,
             severity_sort = true,
             float = {
                 style = 'minimal',
@@ -113,10 +115,10 @@ return {
                 "intelephense",
                 "ts_ls",
                 "eslint",
-		"clangd",
-		"rust_analyzer",
-		"pyright",
-		"jdtls",
+                "clangd",
+                "rust_analyzer",
+                "pyright",
+                "jdtls",
             },
             handlers = {
                 -- this first function is the "default handler"
@@ -163,9 +165,9 @@ return {
             sources = {
                 { name = 'path' },
                 { name = 'nvim_lsp' },
-                { name = 'buffer',  keyword_length = 3 },
-                { name = 'luasnip', keyword_length = 2 },
-		-- { name = 'copilot' },
+                { name = 'buffer',     keyword_length = 3 },
+                { name = 'luasnip',    keyword_length = 2 },
+                -- { name = 'copilot' },
             },
             snippet = {
                 expand = function(args)
