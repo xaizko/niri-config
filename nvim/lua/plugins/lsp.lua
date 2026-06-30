@@ -10,7 +10,7 @@ return {
         'saadparwaiz1/cmp_luasnip',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-nvim-lua',
-        -- 'zbirenbaum/copilot-cmp',
+        'github/copilot.vim',
         -- Snippets
         'L3MON4D3/LuaSnip',
         'rafamadriz/friendly-snippets',
@@ -26,26 +26,8 @@ return {
             "typescript",
             "typescriptreact",
         }
-        -- Create a keymap for vim.lsp.buf.implementation
---        vim.api.nvim_create_autocmd('LspAttach', {
---            callback = function(args)
---                local client = vim.lsp.get_client_by_id(args.data.client_id)
---                if not client then return end
---                if vim.tbl_contains(autoformat_filetypes, vim.bo.filetype) then
---                    vim.api.nvim_create_autocmd("BufWritePre", {
---                       buffer = args.buf,
---                        callback = function()
---                            vim.lsp.buf.format({
---                                formatting_options = { tabSize = 4, insertSpaces = true },
---                                bufnr = args.buf,
---                                id = client.id
---                            })
---                        end
---                    })
---                end
---            end
---        })
 
+        -- Set up handlers for modern 0.12+ borders
         vim.lsp.handlers['textDocument/hover'] = function(err, result, ctx, config)
             config = config or {}
             config.border = 'rounded'
@@ -79,8 +61,6 @@ return {
             },
         })
 
-        -- Add cmp_nvim_lsp capabilities settings to lspconfig
-        -- This should be executed before you configure any language server
         local lspconfig_defaults = require('lspconfig').util.default_config
         lspconfig_defaults.capabilities = vim.tbl_deep_extend(
             'force',
@@ -88,12 +68,9 @@ return {
             require('cmp_nvim_lsp').default_capabilities()
         )
 
-        -- This is where you enable features that only work
-        -- if there is a language server active in the file
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(event)
                 local opts = { buffer = event.buf }
-
                 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
                 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
                 vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
@@ -111,36 +88,20 @@ return {
         require('mason').setup({})
         require('mason-lspconfig').setup({
             ensure_installed = {
-                "lua_ls",
-                "intelephense",
-                "ts_ls",
-                "eslint",
-                "clangd",
-                "rust_analyzer",
-                "pyright",
-                "jdtls",
+                "lua_ls", "intelephense", "ts_ls", "eslint", 
+                "clangd", "rust_analyzer", "pyright", "jdtls"
             },
             handlers = {
-                -- this first function is the "default handler"
-                -- it applies to every language server without a custom handler
                 function(server_name)
                     require('lspconfig')[server_name].setup({})
                 end,
-
-                -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
                     require('lspconfig').lua_ls.setup({
                         settings = {
                             Lua = {
-                                runtime = {
-                                    version = 'LuaJIT',
-                                },
-                                diagnostics = {
-                                    globals = { 'vim' },
-                                },
-                                workspace = {
-                                    library = { vim.env.VIMRUNTIME },
-                                },
+                                runtime = { version = 'LuaJIT' },
+                                diagnostics = { globals = { 'vim' } },
+                                workspace = { library = { vim.env.VIMRUNTIME } },
                             },
                         },
                     })
@@ -148,65 +109,42 @@ return {
             },
         })
 
+        -- --- Core Autocomplete Config Layer ---
         local cmp = require('cmp')
-
         require('luasnip.loaders.from_vscode').lazy_load()
 
         vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
         cmp.setup({
             preselect = 'item',
-            completion = {
-                completeopt = 'menu,menuone,noinsert'
-            },
-            window = {
-                documentation = cmp.config.window.bordered(),
-            },
+            completion = { completeopt = 'menu,menuone,noinsert' },
+            window = { documentation = cmp.config.window.bordered() },
             sources = {
                 { name = 'path' },
                 { name = 'nvim_lsp' },
                 { name = 'buffer',     keyword_length = 3 },
                 { name = 'luasnip',    keyword_length = 2 },
-                -- { name = 'copilot' },
             },
             snippet = {
-                expand = function(args)
-                    require('luasnip').lsp_expand(args.body)
-                end,
+                expand = function(args) require('luasnip').lsp_expand(args.body) end,
             },
             formatting = {
                 fields = { 'abbr', 'menu', 'kind' },
                 format = function(entry, item)
                     local n = entry.source.name
-                    if n == 'nvim_lsp' then
-                        item.menu = '[LSP]'
-                    else
-                        item.menu = string.format('[%s]', n)
-                    end
+                    item.menu = n == 'nvim_lsp' and '[LSP]' or string.format('[%s]', n)
                     return item
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                -- confirm completion item
                 ['<CR>'] = cmp.mapping.confirm({ select = false }),
-
-                -- scroll documentation window
                 ['<C-f>'] = cmp.mapping.scroll_docs(5),
                 ['<C-u>'] = cmp.mapping.scroll_docs(-5),
-
-                -- toggle completion menu
-                ['<C-e>'] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.abort()
-                    else
-                        cmp.complete()
-                    end
+                ['<C-e>'] = cmp.mapping(function()
+                    if cmp.visible() then cmp.abort() else cmp.complete() end
                 end),
-
-                -- tab complete
                 ['<Tab>'] = cmp.mapping(function(fallback)
                     local col = vim.fn.col('.') - 1
-
                     if cmp.visible() then
                         cmp.select_next_item({ behavior = 'select' })
                     elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
@@ -215,32 +153,20 @@ return {
                         cmp.complete()
                     end
                 end, { 'i', 's' }),
-
-                -- go to previous item
                 ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = 'select' }),
-
-                -- navigate to next snippet placeholder
-                ['<C-d>'] = cmp.mapping(function(fallback)
-                    local luasnip = require('luasnip')
-
-                    if luasnip.jumpable(1) then
-                        luasnip.jump(1)
-                    else
-                        fallback()
-                    end
-                end, { 'i', 's' }),
-
-                -- navigate to the previous snippet placeholder
-                ['<C-b>'] = cmp.mapping(function(fallback)
-                    local luasnip = require('luasnip')
-
-                    if luasnip.jumpable(-1) then
-                        luasnip.jump(-1)
-                    else
-                        fallback()
-                    end
-                end, { 'i', 's' }),
             }),
+        })
+
+        -- Map Tab to accept Copilot recommendations when a suggestion is visible.
+        -- If an nvim-cmp dropdown menu is active instead, fallback to native menu selection.
+	vim.g.copilot_no_tab_map = true
+
+        -- 2. Map Shift+Tab (<S-Tab>) to accept the Copilot ghost text suggestion
+        vim.keymap.set('i', '<S-Tab>', 'copilot#Accept("<CR>")', {
+            silent = true,
+            expr = true,
+            replace_keycodes = false,
+            desc = "Accept Copilot Suggestion"
         })
     end
 }
